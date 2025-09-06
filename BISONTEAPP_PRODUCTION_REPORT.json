@@ -1,0 +1,78 @@
+{
+  "timestamp": "2025-09-06T14:32:39.809Z",
+  "url": "https://www.bisonteapp.com",
+  "summary": {
+    "totalTests": 8,
+    "passed": 2,
+    "failed": 6,
+    "successRate": 25,
+    "ssrErrorsDetected": 0
+  },
+  "results": [
+    {
+      "name": "🏠 Home Page Load",
+      "passed": true,
+      "status": 200,
+      "path": "",
+      "redirected": false,
+      "hasSSRErrors": false
+    },
+    {
+      "name": "🔐 NextAuth Session API",
+      "passed": false,
+      "status": 308,
+      "path": "/api/auth/session",
+      "redirected": true,
+      "hasSSRErrors": false
+    },
+    {
+      "name": "❤️ Health Check Endpoint",
+      "passed": false,
+      "status": 308,
+      "path": "/api/health",
+      "redirected": true,
+      "hasSSRErrors": false
+    },
+    {
+      "name": "📱 Login Page",
+      "passed": false,
+      "status": 308,
+      "path": "/login",
+      "redirected": true,
+      "hasSSRErrors": false
+    },
+    {
+      "name": "🏠 Home Protected Route",
+      "passed": false,
+      "status": 308,
+      "path": "/home",
+      "redirected": true,
+      "hasSSRErrors": false
+    },
+    {
+      "name": "📊 Admin Panel",
+      "passed": false,
+      "status": 308,
+      "path": "/admin/usuarios",
+      "redirected": true,
+      "hasSSRErrors": false
+    },
+    {
+      "name": "📋 Cotizador",
+      "passed": false,
+      "status": 308,
+      "path": "/cotizador",
+      "redirected": true,
+      "hasSSRErrors": false
+    },
+    {
+      "name": "🎨 Static Assets (Favicon)",
+      "passed": true,
+      "status": 200,
+      "path": "/favicon.ico",
+      "redirected": false,
+      "hasSSRErrors": false
+    }
+  ],
+  "status": "FAILED"
+}

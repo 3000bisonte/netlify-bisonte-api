@@ -1,6 +1,6 @@
 {
   "env": {
-    "NEXTAUTH_URL": "https://bisonteapp.vercel.app",
+    "NEXTAUTH_URL": "https://www.bisonteapp.com",
     "NEXTAUTH_SECRET": "eaf72e12c7a832aca2f9b8e1c5a2b9f6e1c9c5b1e3c4d6e7b2a3f1e9c7d5b3e6",
     "GOOGLE_CLIENT_ID": "1021134411556-mf3hq4l47r8p13e3bjpdn3jhgv1oc9ch.apps.googleusercontent.com",
     "GOOGLE_CLIENT_SECRET": "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",
