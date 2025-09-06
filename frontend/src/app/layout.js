@@ -1,6 +1,5 @@
 import "./globals.css";
 import { Providers } from "./Providers";
-import { RouteGuard } from "@/components/RouteGuard";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import ConnectionHandler from "@/components/ConnectionHandler";
 import AdDebugInfo from "@/components/AdDebugInfo";
@@ -62,14 +61,12 @@ export default function RootLayout({ children }) {
       </head>
       <body className={inter.className} suppressHydrationWarning>
         <Providers>
-          <RouteGuard>
-            {children}
-            <AdBannerNative />
-            <MobileBottomNav />
-            <ServiceWorkerRegister />
-            <ConnectionHandler />
-            <AdDebugInfo />
-          </RouteGuard>
+          {children}
+          <AdBannerNative />
+          <MobileBottomNav />
+          <ServiceWorkerRegister />
+          <ConnectionHandler />
+          <AdDebugInfo />
         </Providers>
       </body>
     </html>
