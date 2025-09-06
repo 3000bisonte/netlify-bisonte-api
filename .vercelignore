@@ -14,6 +14,7 @@ adb/
 # Backend code (separate deployment)
 api-server/
 backend-api/
+backend/netlify-bisonte-api/
 
 # Node modules (installed on Vercel)
 node_modules/
