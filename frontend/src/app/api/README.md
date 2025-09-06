@@ -1,0 +1,1 @@
+All routes in this folder are disabled for frontend-only build. They either return 404 or are not used in production; real APIs live in Netlify Functions. Keep files only if pages expect a status 404.

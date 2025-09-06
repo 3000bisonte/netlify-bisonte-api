@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+frontend/.next
+frontend/out
+frontend/mobile/android/app/build
+# Vercel
+.vercel/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# OS/Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Tests/coverage
+coverage/
+
+# Build artifacts
+build/
+dist/
+tmp/
+
+# Android/Capacitor (ignore entire folder to keep repo lean)
+android/
+
+# Mobile app bundle (if present)
+mobile/
+
+# API server moved to Bisonte-api repo; ignore in front repo
+api-server/
+.vercel
