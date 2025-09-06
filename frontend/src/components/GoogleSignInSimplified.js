@@ -211,8 +211,8 @@ export default function GoogleSignInSimplified() {
       // Client ID
       const isDev = window.location.hostname === 'localhost';
       const clientId = isDev 
-        ? "831420252741-4191330gjs69hkm4jr55rig3d8ouas0f.apps.googleusercontent.com"
-        : "108242889910-n3ptem16orktkl0klv8onlttfl83r1ul.apps.googleusercontent.com";
+        ? (process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "PLACEHOLDER_GOOGLE_CLIENT_ID")
+        : (process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "PLACEHOLDER_GOOGLE_CLIENT_ID");
 
       console.log('🆔 Using Client ID:', clientId.substring(0, 20) + '...');
 

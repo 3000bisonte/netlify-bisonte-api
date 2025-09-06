@@ -2,8 +2,7 @@
 // Evita repetir literales de client IDs y redirect URIs en múltiples archivos.
 
 const DEFAULT_WEB_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
-  || process.env.NEXT_PUBLIC_GOOGLE_FALLBACK_CLIENT_ID
-  || '108242889910-n3ptem16orktkl0klv8onlttfl83r1ul.apps.googleusercontent.com';
+  || 'PLACEHOLDER_GOOGLE_CLIENT_ID';
 
 // Posible futuro: client id específico móvil si difiere
 const DEFAULT_MOBILE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_MOBILE_CLIENT_ID

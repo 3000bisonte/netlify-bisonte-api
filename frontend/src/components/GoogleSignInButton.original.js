@@ -33,7 +33,7 @@ export default function GoogleSignInButton({ clientId, onCredential, useRedirect
     if (!clientId && !runtimeClientId) {
       // En lugar de usar fetch, usar el ID hardcodeado inmediatamente en Capacitor
       if (isCapacitor) {
-        const fallbackClientId = "108242889910-n3ptem16orktkl0klv8onlttfl83r1ul.apps.googleusercontent.com";
+        const fallbackClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "PLACEHOLDER_GOOGLE_CLIENT_ID";
         setRuntimeClientId(fallbackClientId);
         console.log('Capacitor detectado - usando Google Client ID hardcodeado inmediatamente');
         return;
@@ -49,7 +49,7 @@ export default function GoogleSignInButton({ clientId, onCredential, useRedirect
           } else {
             console.error('No se pudo obtener Google Client ID del servidor');
             // Fallback hardcodeado para APK en caso de emergencia
-            const fallbackClientId = "108242889910-n3ptem16orktkl0klv8onlttfl83r1ul.apps.googleusercontent.com";
+            const fallbackClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "PLACEHOLDER_GOOGLE_CLIENT_ID";
             setRuntimeClientId(fallbackClientId);
             console.log('Usando Google Client ID hardcodeado como fallback');
           }
@@ -57,7 +57,7 @@ export default function GoogleSignInButton({ clientId, onCredential, useRedirect
         .catch(err => {
           console.error('Error obteniendo config:', err);
           // Fallback hardcodeado para APK en caso de emergencia
-          const fallbackClientId = "108242889910-n3ptem16orktkl0klv8onlttfl83r1ul.apps.googleusercontent.com";
+          const fallbackClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "PLACEHOLDER_GOOGLE_CLIENT_ID";
           setRuntimeClientId(fallbackClientId);
           console.log('Error de red - usando Google Client ID hardcodeado como fallback');
         });
