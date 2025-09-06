@@ -1,24 +1,87 @@
 'use client';
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useMobileSession } from '@/hooks/useMobileSession';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [isClient, setIsClient] = useState(false);
-  const mobileSession = useMobileSession();
+  const { data: session, status } = useSession();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
-  // Verificar si estamos en el cliente
   useEffect(() => {
-    setIsClient(true);
-  }, []);
+    // Solo ejecutar en el cliente
+    if (typeof window === 'undefined') return;
 
-  // Mantener compatibilidad con código existente
+    if (status === 'loading') {
+      setLoading(true);
+      return;
+    }
+
+    if (session?.user) {
+      setUser(session.user);
+    } else {
+      setUser(null);
+    }
+    
+    setLoading(false);
+  }, [session, status]);
+
+  const login = async (credentials) => {
+    try {
+      setLoading(true);
+      
+      const result = await signIn('credentials', {
+        redirect: false,
+        email: credentials.email,
+        password: credentials.password,
+      });
+
+      if (result?.error) {
+        console.error('Login error:', result.error);
+        throw new Error(result.error);
+      }
+
+      if (result?.ok) {
+        // Esperar a que la sesión se actualice
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        router.push('/home');
+        return { success: true };
+      }
+
+      throw new Error('Login failed');
+    } catch (error) {
+      console.error('Auth login error:', error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      setLoading(true);
+      await signOut({ redirect: false });
+      setUser(null);
+      router.push('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const contextValue = {
-    ...mobileSession,
-    user: mobileSession.data?.user,
-    isLoading: !isClient || mobileSession.loading,
-    isAuthenticated: isClient && mobileSession.status === 'authenticated'
+    user,
+    loading,
+    isAuthenticated: !!user,
+    isLoading: loading,
+    login,
+    logout,
+    session,
+    status
   };
 
   return (
@@ -35,10 +98,13 @@ export function useAuth() {
     if (typeof window === 'undefined') {
       return {
         user: null,
-        isLoading: true,
+        loading: true,
         isAuthenticated: false,
+        isLoading: true,
         session: null,
-        status: 'loading'
+        status: 'loading',
+        login: async () => {},
+        logout: async () => {}
       };
     }
     throw new Error('useAuth debe usarse dentro de AuthProvider');

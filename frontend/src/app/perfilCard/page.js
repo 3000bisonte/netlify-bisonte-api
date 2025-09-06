@@ -1,9 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 import BottomNav from "@/components/BottomNav";
 
-
 export default function PerfilCard() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+  
   const [form, setForm] = useState({
     nombre: "",
     tipoDocumento: "",
@@ -15,6 +19,24 @@ export default function PerfilCard() {
   });
   const [msg, setMsg] = useState("");
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-lg">Cargando...</div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
 
   // Validaciones
   const validarNombre = (nombre) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(nombre.trim());
