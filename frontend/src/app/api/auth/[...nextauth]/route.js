@@ -23,12 +23,52 @@ export const authOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          console.error('Missing credentials');
           return null;
         }
 
         try {
-          // URL de la API de Netlify Functions
+          // Usuarios demo para pruebas
+          const demoUsers = [
+            {
+              id: "1",
+              email: "demo@bisonte.com",
+              password: "demo123",
+              name: "Usuario Demo",
+              role: "user",
+              esAdministrador: false,
+              esRecolector: true
+            },
+            {
+              id: "2", 
+              email: "admin@bisonte.com",
+              password: "admin123",
+              name: "Administrador",
+              role: "admin",
+              esAdministrador: true,
+              esRecolector: false
+            },
+            {
+              id: "3",
+              email: "user@bisonte.com", 
+              password: "user123",
+              name: "Usuario Normal",
+              role: "user",
+              esAdministrador: false,
+              esRecolector: false
+            }
+          ];
+
+          // Verificar usuarios demo
+          const user = demoUsers.find(u => 
+            u.email === credentials.email && u.password === credentials.password
+          );
+
+          if (user) {
+            const { password, ...userWithoutPassword } = user;
+            return userWithoutPassword;
+          }
+
+          // Intentar autenticación con API de Netlify
           const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://bisontebackend.netlify.app/.netlify/functions';
           
           const response = await fetch(`${apiUrl}/login`, {
@@ -42,55 +82,23 @@ export const authOptions = {
             })
           });
 
-          if (!response.ok) {
-            console.error('Login failed:', response.status);
-            return null;
-          }
-
-          const data = await response.json();
-
-          if (data.token && data.user) {
-            // Retornar el usuario con todos los datos necesarios
-            return {
-              id: data.user._id || data.user.id,
-              email: data.user.email,
-              name: data.user.name || data.user.nombre,
-              role: data.user.role || data.user.rol,
-              token: data.token,
-              esAdministrador: data.user.esAdministrador || false,
-              esRecolector: data.user.esRecolector || false,
-              ...data.user
-            };
-          }
-
-          // Fallback para admin local si la API no está disponible
-          if (credentials.email === "admin@bisonteapp.com" && credentials.password === "admin123") {
-            return {
-              id: "admin",
-              email: credentials.email,
-              name: "Admin User",
-              role: "admin",
-              esAdministrador: true,
-              esRecolector: false
-            };
+          if (response.ok) {
+            const data = await response.json();
+            if (data.token && data.user) {
+              return {
+                id: data.user._id || data.user.id,
+                email: data.user.email,
+                name: data.user.name || data.user.nombre,
+                role: data.user.role || data.user.rol,
+                esAdministrador: data.user.esAdministrador || false,
+                esRecolector: data.user.esRecolector || false,
+                token: data.token
+              };
+            }
           }
 
           return null;
         } catch (error) {
-          console.error('Auth error:', error);
-          
-          // Fallback para admin local en caso de error
-          if (credentials.email === "admin@bisonteapp.com" && credentials.password === "admin123") {
-            return {
-              id: "admin",
-              email: credentials.email,
-              name: "Admin User",
-              role: "admin",
-              esAdministrador: true,
-              esRecolector: false
-            };
-          }
-          
           return null;
         }
       }
@@ -98,18 +106,16 @@ export const authOptions = {
   ],
   callbacks: {
     async jwt({ token, user, account }) {
-      // Agregar datos del usuario al token
       if (user) {
-        token.accessToken = user.token;
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
         token.role = user.role;
         token.esAdministrador = user.esAdministrador;
         token.esRecolector = user.esRecolector;
+        token.accessToken = user.token;
       }
       
-      // Preservar token de Google OAuth
       if (account?.provider === "google") {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
@@ -118,9 +124,7 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }) {
-      // Enviar propiedades al cliente
       if (token) {
-        session.accessToken = token.accessToken;
         session.user = {
           id: token.id,
           email: token.email,
@@ -129,11 +133,11 @@ export const authOptions = {
           esAdministrador: token.esAdministrador,
           esRecolector: token.esRecolector
         };
+        session.accessToken = token.accessToken;
       }
       return session;
     },
     async signIn({ user, account, profile }) {
-      // Permitir sign in para todas las cuentas válidas
       return true;
     }
   },
@@ -146,56 +150,8 @@ export const authOptions = {
     maxAge: 30 * 24 * 60 * 60, // 30 días
   },
   secret: process.env.NEXTAUTH_SECRET,
-  debug: process.env.NODE_ENV === 'development',
+  debug: process.env.NODE_ENV === 'development'
 }
 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
-      if (user) {
-        token.userId = user.id
-        token.esAdministrador = user.esAdministrador
-        token.esRecolector = user.esRecolector
-      }
-      return token
-    },
-    async session({ session, token }) {
-      if (token) {
-        session.user.id = token.userId
-        session.user.esAdministrador = token.esAdministrador
-        session.user.esRecolector = token.esRecolector
-      }
-      return session
-    },
-    async signIn({ user, account, profile }) {
-      if (account?.provider === "google") {
-        // For Google sign-in, allow all users for now
-        console.log("Google user signed in:", user.email)
-      }
-      return true
-    }
-  },
-  pages: {
-    signIn: "/login",
-    error: "/login"
-  },
-  session: {
-    strategy: "jwt",
-    maxAge: 24 * 60 * 60, // 24 hours
-  },
-  cookies: {
-    sessionToken: {
-      name: "next-auth.session-token",
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: process.env.NODE_ENV === "production"
-      }
-    }
-  },
-  debug: process.env.NODE_ENV === "development"
-}
-
-const handler = NextAuth(authOptions)
-
-export { handler as GET, handler as POST }
