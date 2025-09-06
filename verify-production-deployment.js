@@ -8,7 +8,7 @@
 const https = require('https');
 const fs = require('fs');
 
-const PRODUCTION_URL = 'https://bisonte-modificado.vercel.app';
+const PRODUCTION_URL = 'https://bisonteapp.vercel.app';
 const TIMEOUT = 10000;
 
 // Función para hacer request HTTP

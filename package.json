@@ -8,7 +8,7 @@
     "build": "npm --prefix frontend run build",
     "start": "npm --prefix frontend run start",
     "lint": "npm --prefix frontend run lint",
-    "vercel-build": "cd frontend && npm ci && npm run build",
+    "vercel-build": "cd frontend && npm install && npm run build",
     "check:endpoints": "node scripts/check-endpoints.js"
   },
   "dependencies": {
@@ -19,6 +19,8 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@types/node": "^20.11.19",
+    "@types/react": "^18.2.21",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5"
