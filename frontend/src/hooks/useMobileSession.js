@@ -4,6 +4,11 @@ import { useState, useEffect, useCallback } from 'react';
 
 // Función de utilidad para obtener datos de localStorage con logging
 const getFromLocalStorage = (key) => {
+  // Verificar si estamos en el cliente
+  if (typeof window === 'undefined') {
+    return null;
+  }
+  
   try {
     console.log(`🔍 GETTING from localStorage: ${key}`);
     const value = localStorage.getItem(key);
@@ -27,6 +32,11 @@ const safeJsonParse = (jsonString, fallback = null) => {
 
 // Función para crear sesión desde localStorage
 const createSessionFromStorage = () => {
+  // Verificar si estamos en el cliente
+  if (typeof window === 'undefined') {
+    return null;
+  }
+  
   console.log('🔄 CREATING SESSION FROM STORAGE - Checking all sources...');
   
   // Verificar múltiples fuentes de datos
@@ -109,6 +119,12 @@ const createSessionFromStorage = () => {
 
   // Fallback: construir desde google_id_token si existe y no tenemos ninguna otra fuente
   try {
+    // Verificar si estamos en el cliente antes de usar atob
+    if (typeof window === 'undefined') {
+      console.log('ℹ️ SSR - Skipping google_id_token fallback');
+      return null;
+    }
+    
     const idToken = getFromLocalStorage('google_id_token');
     if (idToken) {
       console.log('🔁 Intentando fallback con google_id_token...');
@@ -163,6 +179,12 @@ export const useMobileSession = () => {
 
   // Función para inspeccionar localStorage completo
   const inspectLocalStorage = useCallback(() => {
+    // Verificar si estamos en el cliente
+    if (typeof window === 'undefined') {
+      console.log('🔍 SSR - Skipping localStorage inspection');
+      return;
+    }
+    
     console.log('🔍 === COMPLETE LOCALSTORAGE INSPECTION ===');
     try {
       for (let i = 0; i < localStorage.length; i++) {
@@ -178,6 +200,13 @@ export const useMobileSession = () => {
 
   // Función para verificar sesión
   const checkSession = useCallback(() => {
+    // Verificar si estamos en el cliente
+    if (typeof window === 'undefined') {
+      console.log('🔄 SSR - Setting loading to false, no session');
+      setLoading(false);
+      return;
+    }
+    
     console.log('🔄 CHECKING SESSION...');
     
     try {
@@ -289,25 +318,31 @@ export const useMobileSession = () => {
           try {
             const raw = parts[1].replace(/-/g,'+').replace(/_/g,'/');
             const pad = raw.length % 4; const padded = pad ? raw + '='.repeat(4-pad) : raw;
-            const payload = JSON.parse(atob(padded));
-            if (payload?.email) {
-              const provisional = {
-                user: {
-                  id: payload.sub || payload.email,
-                  email: payload.email,
-                  name: payload.name || [payload.given_name, payload.family_name].filter(Boolean).join(' ') || payload.email.split('@')[0],
-                  picture: payload.picture || null
-                },
-                token: idTok,
-                refreshToken: null,
-                provider: 'google-id-token',
-                created: new Date().toISOString(),
-                expires: payload.exp ? new Date(payload.exp * 1000).toISOString() : new Date(Date.now() + 55*60*1000).toISOString()
-              };
-              try { localStorage.setItem('bisonte_mobile_session', JSON.stringify(provisional)); } catch {}
-              console.log('✅ Sesión provisional migrada');
+            
+            // Verificar que atob esté disponible (solo en cliente)
+            if (typeof atob !== 'undefined') {
+              const payload = JSON.parse(atob(padded));
+              if (payload?.email) {
+                const provisional = {
+                  user: {
+                    id: payload.sub || payload.email,
+                    email: payload.email,
+                    name: payload.name || [payload.given_name, payload.family_name].filter(Boolean).join(' ') || payload.email.split('@')[0],
+                    picture: payload.picture || null
+                  },
+                  token: idTok,
+                  refreshToken: null,
+                  provider: 'google-id-token',
+                  created: new Date().toISOString(),
+                  expires: payload.exp ? new Date(payload.exp * 1000).toISOString() : new Date(Date.now() + 55*60*1000).toISOString()
+                };
+                try { localStorage.setItem('bisonte_mobile_session', JSON.stringify(provisional)); } catch {}
+                console.log('✅ Sesión provisional migrada');
+              } else {
+                console.warn('⚠️ Payload sin email en migración');
+              }
             } else {
-              console.warn('⚠️ Payload sin email en migración');
+              console.log('ℹ️ atob no disponible, omitiendo migración');
             }
           } catch (e) { console.warn('⚠️ Migración falló decodificando id_token:', e.message); }
         }

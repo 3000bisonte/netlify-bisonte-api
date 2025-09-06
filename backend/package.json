@@ -1,0 +1,10 @@
+{
+  "name": "bisonte-backend",
+  "private": true,
+  "scripts": {
+    "dev:express": "cd ..\\api-server && npm run dev",
+    "start:express": "cd ..\\api-server && npm start",
+    "start:netlify": "cd ..\\netlify-bisonte-api && npm start",
+    "test": "node ..\\test-full-api.js"
+  }
+}

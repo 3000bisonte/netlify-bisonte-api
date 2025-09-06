@@ -1,0 +1,87 @@
+# Variables de Entorno para VERCEL - Bisonte Logística
+# Usar estas variables en el panel de Vercel (vercel.com/dashboard)
+# NO incluir las comillas en Vercel, solo los valores
+
+# ===========================================
+# NextAuth Configuration (CRÍTICO)
+# ===========================================
+NEXTAUTH_SECRET=edf53042b12f07f8aa55498ea575eec9f3a1b8c9d2e4f7h6j9k2l5m8n1p4q7r0
+NEXTAUTH_URL=https://bisonte-modificado.vercel.app
+
+# ===========================================
+# Google OAuth Configuration (PRODUCCIÓN)
+# ===========================================
+GOOGLE_CLIENT_ID=879564321987-qazwsxedcrfv123456789plmoknij.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=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OpQr
+
+# Public Google Client ID (Frontend)
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=879564321987-qazwsxedcrfv123456789plmoknij.apps.googleusercontent.com
+NEXT_PUBLIC_GOOGLE_FALLBACK_CLIENT_ID=879564321987-altfallback0987654321abcdef.apps.googleusercontent.com
+NEXT_PUBLIC_GOOGLE_MOBILE_CLIENT_ID=879564321987-mobileclient0987654321abcd.apps.googleusercontent.com
+
+# ===========================================
+# Database Configuration (PRODUCCIÓN)
+# ===========================================
+DATABASE_URL=postgresql://bisonte_user:Kp9Gft2QvLx8Zc41Jt@db.bisonte.prod.internal:5432/bisonte_prod?sslmode=require
+
+# ===========================================
+# API Configuration (NETLIFY BACKEND)
+# ===========================================
+NEXT_PUBLIC_API_BASE=https://nimble-vacherin-7a32d0.netlify.app/.netlify/functions
+NEXT_PUBLIC_API_URL=https://nimble-vacherin-7a32d0.netlify.app/.netlify/functions
+NEXT_PUBLIC_BISONTE_API_URL=https://nimble-vacherin-7a32d0.netlify.app/.netlify/functions
+NEXT_PUBLIC_API_BASE_URL=https://nimble-vacherin-7a32d0.netlify.app/.netlify/functions
+NEXT_PUBLIC_API_SERVER_URL=https://nimble-vacherin-7a32d0.netlify.app/.netlify/functions
+
+# ===========================================
+# Site URLs (PRODUCCIÓN)
+# ===========================================
+NEXT_PUBLIC_SITE_URL=https://www.bisonteapp.com
+NEXT_PUBLIC_URL_BRICK_STATUS_SCREEN=https://bisonte-modificado.vercel.app
+
+# ===========================================
+# JWT Configuration
+# ===========================================
+JWT_SECRET=4f8d2be6e9e7430aa7c63f5c4d1e8f0b9b6c2d4a5f7e9c0d3a1b2c3d4e5f6071
+
+# ===========================================
+# AdMob Configuration (PRODUCCIÓN)
+# ===========================================
+NEXT_PUBLIC_ADMOB_APP_ID=ca-app-pub-1352045169606160~5443732431
+NEXT_PUBLIC_ADMOB_REWARDED_ID=ca-app-pub-1352045169606160/7908962294
+NEXT_PUBLIC_ADMOB_BANNER_ID=ca-app-pub-1352045169606160/7029983134
+
+# ===========================================
+# MercadoPago Configuration (PRODUCCIÓN)
+# ===========================================
+M_P_PUBLIC_KEY=APP_USR-6754222098823398-110217-97f6788cbdb2a80a682e157fab4247bd-2044503317
+NEXT_PUBLIC_INIT_MERCADOPAGO=APP_USR-cde70759-6a1a-4731-b7e0-8efc0311034d
+
+# ===========================================
+# Email Configuration
+# ===========================================
+RESEND_API_KEY=re_4c1d2e3f5a6b7c8d9e0f1a2b3c4d5e6f
+NEXT_PUBLIC_FROM_EMAIL=logistica@notificaciones.bisonteapp.com
+NEXT_PUBLIC_CONTACT_EMAIL=contacto@notificaciones.bisonteapp.com
+EMAIL_USER=logistica@notificaciones.bisonteapp.com
+EMAIL_PASS=abcd efgh ijkl mnop
+
+# ===========================================
+# Production Environment Flags
+# ===========================================
+NODE_ENV=production
+NEXT_PUBLIC_ENVIRONMENT=production
+NEXT_PUBLIC_APP_MODE=web
+NEXT_PUBLIC_DEBUG=0
+NEXT_PUBLIC_LOG_LEVEL=error
+
+# ===========================================
+# INSTRUCCIONES PARA VERCEL
+# ===========================================
+# 1. Ve a vercel.com/dashboard
+# 2. Selecciona tu proyecto "bisonte-modificado"
+# 3. Ve a Settings > Environment Variables
+# 4. Añade cada variable UNA POR UNA
+# 5. Selecciona "Production, Preview, Development" para todas
+# 6. NO incluyas las comillas, solo los valores
+# 7. Después hacer "Redeploy" desde Deployments

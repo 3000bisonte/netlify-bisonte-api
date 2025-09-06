@@ -4,7 +4,21 @@ import Notification from "@/components/Notification";
 
 const NotificationContext = createContext();
 
-export const useNotification = () => useContext(NotificationContext);
+export const useNotification = () => {
+  const context = useContext(NotificationContext);
+  
+  // Durante SSR, devolver un objeto por defecto
+  if (!context) {
+    if (typeof window === 'undefined') {
+      return {
+        showNotification: () => {} // Función vacía durante SSR
+      };
+    }
+    throw new Error('useNotification debe usarse dentro de NotificationProvider');
+  }
+  
+  return context;
+};
 
 export const NotificationProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([]);

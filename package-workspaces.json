@@ -1,0 +1,8 @@
+{
+  "name": "bisonte",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
+}

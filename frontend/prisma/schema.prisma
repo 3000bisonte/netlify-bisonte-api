@@ -1,0 +1,187 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// NextAuth.js required tables
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                  String                   @id @default(cuid())
+  name                String?
+  email               String                   @unique
+  emailVerified       DateTime?
+  image               String?
+  celular             String?                  @db.VarChar(20)
+  ciudad              String?                  @db.VarChar(200)
+  password            String?                  @db.VarChar(500)
+  token               String?                  @db.VarChar(500)
+  tokenFecha          DateTime?
+  esAdministrador     Boolean                  @default(false)
+  esRecolector        Boolean                  @default(false)
+  createdAt           DateTime                 @default(now())
+  updatedAt           DateTime                 @updatedAt
+  
+  // NextAuth.js relations
+  accounts            Account[]
+  sessions            Session[]
+  
+  // Application relations
+  envios              HistorialEnvio[]
+  sesiones_usuario    sesiones_usuario[]
+  tokens_notificacion tokens_notificacion[]
+
+  @@index([email])
+  @@index([esAdministrador])
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Existing application models
+model HistorialEnvio {
+  id             Int       @id @default(autoincrement())
+  NumeroGuia     String    @unique
+  PaymentId      String?
+  Origen         String
+  Destino        String
+  Destinatario   String
+  Remitente      String
+  Estado         String
+  FechaSolicitud DateTime  @default(now())
+  usuarioId      String?
+  peso           Float?
+  valor          Float?
+  dimensiones    String?
+  notas          String?
+  fechaEntrega   DateTime?
+  creadoEn       DateTime  @default(now())
+  actualizadoEn  DateTime  @updatedAt
+  usuario        User?     @relation(fields: [usuarioId], references: [id])
+
+  @@index([NumeroGuia])
+  @@index([Estado])
+  @@index([FechaSolicitud])
+  @@index([usuarioId])
+  @@map("historial_envio")
+}
+
+model Contacto {
+  id               Int       @id @default(autoincrement())
+  nombre           String    @db.VarChar(200)
+  tipo_documento   String?   @db.VarChar(20)
+  numero_documento String?   @db.VarChar(30)
+  celular          String?   @db.VarChar(20)
+  ciudad           String?   @db.VarChar(200)
+  email            String?   @db.VarChar(150)
+  correo           String    @db.VarChar(150)
+  mensaje          String
+  creadoEn         DateTime  @default(now())
+  leido            Boolean   @default(false)
+  respondido       Boolean   @default(false)
+  archivado        Boolean   @default(false)
+  respuesta        String?
+  fechaRespuesta   DateTime?
+
+  @@index([creadoEn])
+  @@index([leido])
+  @@index([respondido])
+  @@map("contactos")
+}
+
+model configuracion_app {
+  id            Int      @id @default(autoincrement())
+  clave         String   @unique
+  valor         String
+  descripcion   String?
+  activa        Boolean  @default(true)
+  creadoEn      DateTime @default(now())
+  actualizadoEn DateTime
+
+  @@index([activa])
+  @@index([clave])
+}
+
+model eventos_analytics {
+  id           String   @id
+  usuarioId    String?
+  sesionId     String?
+  eventoTipo   String
+  eventoNombre String
+  pantalla     String?
+  datos        Json?
+  timestamp    DateTime @default(now())
+
+  @@index([eventoTipo])
+  @@index([timestamp])
+  @@index([usuarioId])
+}
+
+model sesiones_usuario {
+  id           String    @id
+  usuarioId    String
+  deviceId     String?
+  platform     String?
+  appVersion   String?
+  osVersion    String?
+  ipAddress    String?
+  userAgent    String?
+  inicioSesion DateTime  @default(now())
+  finSesion    DateTime?
+  activa       Boolean   @default(true)
+  usuarios     User      @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@index([activa])
+  @@index([inicioSesion])
+  @@index([usuarioId])
+}
+
+model tokens_notificacion {
+  id        Int      @id @default(autoincrement())
+  usuarioId String
+  token     String   @unique
+  platform  String
+  activo    Boolean  @default(true)
+  creadoEn  DateTime @default(now())
+  ultimoUso DateTime @default(now())
+  usuarios  User     @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@index([activo])
+  @@index([usuarioId])
+}
