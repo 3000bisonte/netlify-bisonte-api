@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-09-06T14:52:41.112Z",
+  "timestamp": "2025-09-06T15:07:15.909Z",
   "url": "https://www.bisonteapp.com",
   "summary": {
     "totalTests": 34,
@@ -381,13 +381,8 @@
       "path": "/api/test",
       "passed": false,
       "critical": false,
-      "status": 500,
-      "originalStatus": 308,
-      "redirected": true,
-      "redirectUrl": "https://www.bisonteapp.com/api/test/",
-      "isAPI": true,
-      "reason": "API returned 500",
-      "hasSSRErrors": false
+      "error": "read ECONNRESET",
+      "isAPI": true
     },
     {
       "name": "📊 Status API",
