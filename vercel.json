@@ -1,7 +1,7 @@
 {
   "version": 2,
   "framework": "nextjs",
-  "devCommand": "next dev ./frontend -p 3001",
-  "installCommand": "npm ci --prefer-offline || npm install && cd frontend && (npm ci --prefer-offline || npm install)",
-  "buildCommand": "npm run vercel-build"
+  "devCommand": "cd frontend && next dev -p 3001",
+  "installCommand": "cd frontend && npm install",
+  "buildCommand": "cd frontend && next build"
 }
