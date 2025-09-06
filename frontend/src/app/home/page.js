@@ -1,6 +1,6 @@
 "use client";
 import dynamic from 'next/dynamic';
-import { useAuth } from '@/context/AuthContext';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import HomeModular from '@/components/home/HomeModular';
@@ -8,16 +8,16 @@ import HomeModular from '@/components/home/HomeModular';
 const ClientErrorBoundary = dynamic(()=>import('@/components/ClientErrorBoundary'), { ssr:false });
 
 export default function HomePage(){
-  const { user, loading } = useAuth();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (status === 'unauthenticated') {
       router.push('/login');
     }
-  }, [user, loading, router]);
+  }, [status, router]);
 
-  if (loading) {
+  if (status === 'loading') {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-lg">Cargando...</div>
@@ -25,7 +25,7 @@ export default function HomePage(){
     );
   }
 
-  if (!user) {
+  if (status === 'unauthenticated') {
     return null;
   }
 

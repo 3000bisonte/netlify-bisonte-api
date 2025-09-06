@@ -1,22 +1,22 @@
 'use client';
 import styles from './ProtectedRoute.module.css';
-import { useAuth } from '../context/AuthContext';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 export default function ProtectedRoute({ children }) {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    if (status === 'unauthenticated') {
       console.log('🚫 No autenticado, redirigiendo...');
       router.replace('/');
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [status, router]);
 
   // Mostrar loading mientras verifica
-  if (isLoading) {
+  if (status === 'loading') {
     return (
       <div className={styles.minHScreen + " " + styles.flex + " " + styles.itemsCenter + " " + styles.justifyCenter + " " + styles.bgGradientToBr + " " + styles.fromOrange400 + " " + styles.toRed500}>
         <div className={styles.textCenter}>
@@ -28,7 +28,7 @@ export default function ProtectedRoute({ children }) {
   }
 
   // Solo mostrar contenido si está autenticado
-  if (isAuthenticated) {
+  if (session) {
     return children;
   }
 
