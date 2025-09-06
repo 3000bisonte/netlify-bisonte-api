@@ -1,0 +1,80 @@
+{
+  "timestamp": "2025-09-06T14:29:11.161Z",
+  "frontendUrl": "https://bisonteapp.vercel.app",
+  "backendUrl": "https://elegant-babka-4f1b5b.netlify.app/.netlify/functions",
+  "results": {
+    "frontend": {
+      "passed": 0,
+      "total": 5,
+      "tests": [
+        {
+          "type": "frontend",
+          "name": "Home Page Load",
+          "passed": false,
+          "status": 404,
+          "path": "",
+          "url": "https://bisonteapp.vercel.app"
+        },
+        {
+          "type": "frontend",
+          "name": "NextAuth Session API",
+          "passed": false,
+          "status": 404,
+          "path": "/api/auth/session",
+          "url": "https://bisonteapp.vercel.app/api/auth/session"
+        },
+        {
+          "type": "frontend",
+          "name": "Health Check Endpoint",
+          "passed": false,
+          "status": 404,
+          "path": "/api/health",
+          "url": "https://bisonteapp.vercel.app/api/health"
+        },
+        {
+          "type": "frontend",
+          "name": "Login Page",
+          "passed": false,
+          "status": 404,
+          "path": "/login",
+          "url": "https://bisonteapp.vercel.app/login"
+        },
+        {
+          "type": "frontend",
+          "name": "Static Assets (Favicon)",
+          "passed": false,
+          "status": 404,
+          "path": "/favicon.ico",
+          "url": "https://bisonteapp.vercel.app/favicon.ico"
+        }
+      ]
+    },
+    "backend": {
+      "passed": 0,
+      "total": 2,
+      "tests": [
+        {
+          "type": "backend",
+          "name": "Netlify Health Check",
+          "passed": false,
+          "status": 404,
+          "path": "/health-compact2",
+          "url": "https://elegant-babka-4f1b5b.netlify.app/.netlify/functions/health-compact2"
+        },
+        {
+          "type": "backend",
+          "name": "Google Auth Endpoint",
+          "passed": false,
+          "status": 404,
+          "path": "/google2",
+          "url": "https://elegant-babka-4f1b5b.netlify.app/.netlify/functions/google2"
+        }
+      ]
+    }
+  },
+  "summary": {
+    "totalPassed": 0,
+    "totalTests": 7,
+    "success": false
+  }
+}

@@ -4,11 +4,11 @@
   "private": true,
   "description": "Bisonte Logística - Next.js app",
   "scripts": {
-  "dev": "npm --prefix frontend run dev",
-  "build": "npm --prefix frontend run build",
-  "start": "npm --prefix frontend run start",
-  "lint": "npm --prefix frontend run lint",
-    "vercel-build": "npm --prefix frontend run vercel-build",
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix frontend run start",
+    "lint": "npm --prefix frontend run lint",
+    "vercel-build": "cd frontend && npm ci && npm run build",
     "check:endpoints": "node scripts/check-endpoints.js"
   },
   "dependencies": {

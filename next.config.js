@@ -1,7 +1,18 @@
 /**
- * Delegated Next.js config.
- * Vercel build (see vercel.json) runs inside ./frontend so this file only
- * re-exports that configuration to avoid duplicate/ divergent settings.
+ * Configuración de Next.js para el monorepo
+ * Delegamos la configuración al archivo de frontend
  */
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-module.exports = require('./frontend/next.config.js');
+
+const path = require('path');
+
+// Cargar configuración desde frontend
+const frontendConfig = require('./frontend/next.config.js');
+
+module.exports = {
+  ...frontendConfig,
+  // Asegurar que los paths estén correctos para el monorepo
+  experimental: {
+    ...frontendConfig.experimental,
+    outputFileTracingRoot: path.join(__dirname, './'),
+  }
+};

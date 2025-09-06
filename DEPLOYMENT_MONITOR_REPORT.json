@@ -1,0 +1,78 @@
+{
+  "timestamp": "2025-09-06T14:16:39.566Z",
+  "url": "https://bisonte-modificado.vercel.app",
+  "summary": {
+    "totalTests": 8,
+    "passed": 1,
+    "failed": 7,
+    "successRate": 13,
+    "ssrErrorsDetected": 0
+  },
+  "results": [
+    {
+      "name": "🏠 Home Page Load",
+      "passed": true,
+      "status": 200,
+      "path": "",
+      "redirected": false,
+      "hasSSRErrors": false
+    },
+    {
+      "name": "🔐 NextAuth Session Endpoint",
+      "passed": false,
+      "status": 308,
+      "path": "/api/auth/session",
+      "redirected": true,
+      "hasSSRErrors": false
+    },
+    {
+      "name": "❤️ Health Check API",
+      "passed": false,
+      "status": 308,
+      "path": "/api/health",
+      "redirected": true,
+      "hasSSRErrors": false
+    },
+    {
+      "name": "📱 Login Page (SSR Critical)",
+      "passed": false,
+      "status": 308,
+      "path": "/login",
+      "redirected": true,
+      "hasSSRErrors": false
+    },
+    {
+      "name": "🏠 Home Protected Route",
+      "passed": false,
+      "status": 308,
+      "path": "/home",
+      "redirected": true,
+      "hasSSRErrors": false
+    },
+    {
+      "name": "📊 Admin Panel (Context Heavy)",
+      "passed": false,
+      "status": 308,
+      "path": "/admin/usuarios",
+      "redirected": true,
+      "hasSSRErrors": false
+    },
+    {
+      "name": "📋 Cotizador (Form Page)",
+      "passed": false,
+      "status": 308,
+      "path": "/cotizador",
+      "redirected": true,
+      "hasSSRErrors": false
+    },
+    {
+      "name": "🔄 Auth Callback",
+      "passed": false,
+      "status": 308,
+      "path": "/auth/google/callback",
+      "redirected": true,
+      "hasSSRErrors": false
+    }
+  ],
+  "status": "FAILED"
+}

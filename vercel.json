@@ -1,17 +1,4 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "frontend/package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/frontend/$1"
-    }
-  ],
   "env": {
     "NEXTAUTH_URL": "https://bisonteapp.vercel.app",
     "NEXTAUTH_SECRET": "eaf72e12c7a832aca2f9b8e1c5a2b9f6e1c9c5b1e3c4d6e7b2a3f1e9c7d5b3e6",
