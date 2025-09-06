@@ -47,3 +47,7 @@ mobile/
 # API server moved to Bisonte-api repo; ignore in front repo
 api-server/
 .vercel
+
+# Environment variables with sensitive data
+.env.local
+.env.*.local

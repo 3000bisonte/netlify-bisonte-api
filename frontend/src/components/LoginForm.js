@@ -2,10 +2,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { authAPI, apiClient } from "@/libs/api-client";
+import { signIn, getSession } from "next-auth/react";
 import { LS_KEYS } from '@/auth/keys';
-import { useMobileSession } from "@/hooks/useMobileSession";
-import GoogleSignIn from "@/components/GoogleSignIn";
+import GoogleSignInButton from "@/components/GoogleSignInButton";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -14,34 +13,13 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
-  const mobileSessionApi = useMobileSession();
-  const signIn = typeof mobileSessionApi?.signIn === 'function' ? mobileSessionApi.signIn : null;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const lastUser = localStorage.getItem(LS_KEYS.LAST_USER);
       if (lastUser) setEmail(lastUser);
-      
-      // Limpiar datos de Google Sign-In al entrar al login
-      console.log('🧹 LoginForm: Limpiando datos residuales de Google...');
-      
-      // Cancelar cualquier sesión de Google activa
-      if (window.google?.accounts?.id) {
-        try {
-          window.google.accounts.id.cancel();
-          console.log('✅ Sesión de Google cancelada');
-        } catch (e) {
-          console.log('ℹ️ No hay sesión de Google para cancelar');
-        }
-      }
-      
-      // Limpiar errores previos
-      localStorage.removeItem('google_signin_error');
     }
   }, []);
-
-  // Eliminar fetch runtime client ID - ya no es necesario
-  // El nuevo componente GoogleSignInSimple maneja esto internamente
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,42 +27,32 @@ const LoginForm = () => {
     setErrorMessage("");
     
     try {
-      // Llamar al backend real de autenticación
-      const res = await authAPI.login(email.toLowerCase().trim(), password);
-      if (res && (res.success || res.ok) && (res.token || res.data?.token)) {
-        const token = res.token || res.data?.token;
-        const user = res.user || res.data?.user || { email };
+      const result = await signIn('credentials', {
+        email: email.toLowerCase().trim(),
+        password: password,
+        redirect: false
+      });
 
-        // Persistir token para apiClient
-        apiClient.setAuthToken(token);
-
-        // Persistir datos de usuario (compatibilidad)
-        if (typeof window !== "undefined") {
-          localStorage.setItem(LS_KEYS.LAST_USER, email);
-          localStorage.setItem(LS_KEYS.USER, JSON.stringify(user));
-        }
-
-        // Setear sesión móvil (para Home/useMobileSession)
-        if (signIn) {
-          signIn({ email: user.email, name: user.name });
+      if (result?.error) {
+        setErrorMessage("Email o contraseña incorrectos");
+      } else if (result?.ok) {
+        // Check session after successful sign-in
+        const session = await getSession();
+        if (session) {
+          // Save last user email
+          localStorage.setItem(LS_KEYS.LAST_USER, email.toLowerCase().trim());
+          router.push("/home");
         } else {
-          console.warn('[LoginForm] signIn no disponible todavía, se guardará sólo en localStorage');
+          setErrorMessage("Error al establecer la sesión");
         }
-
-  router.push("/home/");
-      } else {
-        throw new Error(res?.error || res?.message || "Credenciales inválidas");
       }
     } catch (error) {
-      console.error("Error en login:", error);
-      setErrorMessage(typeof error === 'string' ? error : (error?.message || "Error al iniciar sesión."));
+      console.error("Login error:", error);
+      setErrorMessage("Error al iniciar sesión. Inténtalo de nuevo.");
     } finally {
       setIsLoading(false);
     }
   };
-
-  // Eliminar handleGoogleSignIn - ya no es necesario
-  // El nuevo componente GoogleSignInSimple maneja todo internamente
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center px-4 py-8 relative">
@@ -244,7 +212,7 @@ const LoginForm = () => {
 
             {/* Google Button - NextAuth */}
             <div className="flex flex-col items-center gap-4">
-              <GoogleSignIn />
+              <GoogleSignInButton />
             </div>
           </form>
 
