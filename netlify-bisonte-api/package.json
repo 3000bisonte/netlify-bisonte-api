@@ -1,0 +1,23 @@
+{
+  "name": "bisonte-netlify-api",
+  "version": "1.0.0",
+  "description": "Netlify Functions for Bisonte Logística API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests specified\" && exit 0",
+    "build": "echo \"No build process needed\" && exit 0"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {},
+  "author": "Bisonte Logística",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/3000bisonte/Bisonte-modificado"
+  }
+}
