@@ -1,0 +1,40 @@
+{
+  "timestamp": "2025-09-06T14:08:22.123Z",
+  "url": "https://bisonte-modificado.vercel.app",
+  "totalTests": 5,
+  "passed": 2,
+  "failed": 3,
+  "results": [
+    {
+      "name": "Home Page Load",
+      "passed": true,
+      "status": 200,
+      "path": ""
+    },
+    {
+      "name": "Auth API Status",
+      "passed": false,
+      "status": 308,
+      "path": "/api/auth/session"
+    },
+    {
+      "name": "Health Check",
+      "passed": false,
+      "status": 308,
+      "path": "/api/health"
+    },
+    {
+      "name": "Static Assets",
+      "passed": true,
+      "status": 200,
+      "path": "/favicon.ico"
+    },
+    {
+      "name": "SSR Pages Working",
+      "passed": false,
+      "status": 308,
+      "path": "/auth"
+    }
+  ],
+  "success": false
+}
