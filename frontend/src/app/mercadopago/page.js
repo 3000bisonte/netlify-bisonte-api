@@ -1,3 +1,4 @@
+"use client";
 import MercadoPagoComponent from "@/components/MercadoPago";
 
 const MercadoPagoPage = () => {

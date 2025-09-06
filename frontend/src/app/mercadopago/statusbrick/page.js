@@ -1,3 +1,4 @@
+"use client";
 import Screen from "@/components/BrickStatusScreen";
 
 const ScreenPage = () => {
