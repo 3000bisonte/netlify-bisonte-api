@@ -1,7 +1,6 @@
 "use client";
 
 import { SessionProvider } from "next-auth/react";
-import { AuthProvider } from "@/context/AuthContext";
 import { NotificationProvider } from "@/context/NotificationContext";
 import { ConfirmModalProvider } from "@/context/ConfirmModalContext";
 import { useState, useEffect } from 'react';
@@ -21,16 +20,14 @@ export function Providers({ children, session }) {
   return (
     <SessionProvider 
       session={session}
-      refetchInterval={0} 
-      refetchOnWindowFocus={false}
+      refetchInterval={5 * 60} 
+      refetchOnWindowFocus={true}
     >
-      <AuthProvider>
-        <NotificationProvider>
-          <ConfirmModalProvider>
-            {children}
-          </ConfirmModalProvider>
-        </NotificationProvider>
-      </AuthProvider>
+      <NotificationProvider>
+        <ConfirmModalProvider>
+          {children}
+        </ConfirmModalProvider>
+      </NotificationProvider>
     </SessionProvider>
   );
 }

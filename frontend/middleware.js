@@ -1,9 +1,10 @@
-import { withAuth } from "next-auth/middleware";
+// Middleware temporalmente deshabilitado para evitar conflictos con NextAuth
+// import { withAuth } from "next-auth/middleware";
 
-export default withAuth({
-  pages: { signIn: "/login" },
-});
+// export default withAuth({
+//   pages: { signIn: "/login" },
+// });
 
-export const config = {
-  matcher: ["/home/:path*", "/misenvios/:path*", "/admin/:path*"],
-};
+// export const config = {
+//   matcher: ["/home/:path*", "/misenvios/:path*", "/admin/:path*"],
+// };
